@@ -17,6 +17,12 @@ import java.util.List;
 public class VideoController {
     private final VideoService service;
 
+    @GetMapping("hello")
+    public String hello() {
+        return "hello";
+    }
+
+
     @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UploadResponse> uploadVideo(@RequestParam MultipartFile file) {
         var response = service.uploadVideo(file);

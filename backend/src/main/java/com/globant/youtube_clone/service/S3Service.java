@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.ObjectCannedACL;
 
 import java.io.IOException;
@@ -18,10 +17,9 @@ import java.util.UUID;
 
 @Service @RequiredArgsConstructor
 public class S3Service implements FileService {
-    private final S3Client s3Client;
     private final S3Template s3Template;
     @Value("${s3.bucket.name}")
-    private final String bucketName;
+    private String bucketName;
 
     @Override
     public String uploadVideo(MultipartFile file) {
