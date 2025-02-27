@@ -1,0 +1,13 @@
+
+<div class="player-col">
+  <div class="player">
+    <ng-container *ngIf="videoDetails">
+    <video-player [videoUrl]='videoUrl' />
+    </ng-container>
+  </div>
+  <h3>{{videoDetails?.title}}</h3>
+  <p class="description">{{videoDetails?.description}}</p>
+  <button (click)="likeVideo($event)" mat-icon-button aria-label="Like Button">
+      <mat-icon>like</mat-icon>
+  </button>
+</div>

@@ -1,0 +1,13 @@
+.video-card {
+  max-width: 400px;
+}
+
+.profile-avatar {
+  background-size: cover;
+}
+
+.video-list {
+  display: table-row;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}

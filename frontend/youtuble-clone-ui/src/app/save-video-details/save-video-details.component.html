@@ -1,0 +1,68 @@
+<div class="parent">
+  <div class="child">
+    <h4 mat-dialog-title>Video Details</h4>
+    <form class="video-details" [formGroup]="videoDetailsForm">
+      <mat-form-field>
+        <mat-label>Video Title</mat-label>
+        <input [formControl]="title" matInput>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Video Status</mat-label>
+        <mat-select [formControl]="status">
+          <mat-option value="PUBLIC">Public</mat-option>
+          <mat-option value="PRIVATE">Private</mat-option>
+          <mat-option value="UNLISTED">UnListed</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Video Description</mat-label>
+        <textarea [formControl]="description" matInput></textarea>
+      </mat-form-field>
+      <mat-form-field class="tag-list">
+        <mat-label>Video Tags</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Enter tags">
+          @for (tag of tags; track tag) {
+            <mat-chip-row (removed)="remove(tag)">
+              {{tag}}
+              <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+          <input
+            placeholder="Add some tags"
+            [matChipInputFor]="chipGrid"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-grid>
+      </mat-form-field>
+      <div>
+        <label for="inputGroupFile">Upload Thumbnail
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="inputGroupField"
+              aria-describedby="inputGroupFileAddon" #fileInput (change)="onFileSelected(fileInput)">
+          </div>
+          <div *ngIf="imageUrl">
+          <p>Selected File: {{selectedFileName}}</p>
+          <img src="{{imageUrl}}" width="100px" height="80px"/>
+          <hr>
+          <button (click)="onUploadThumbnail($event)" mat-raised-button color="primary" type="submit">Upload</button>
+          </div>
+        </label>
+      </div>
+      <button (click)="saveVideoDetails($event)" type="submit" mat-raised-button color="primary">Save</button>
+    </form>
+  </div>
+  <div class="child">
+    <h4 mat-dialog-title>Video Preview</h4>
+    <ng-container *ngIf="videoDetails">
+      <video-player [videoUrl]="videoDetails!.videoUrl"></video-player>
+    </ng-container>
+    <h3>{{title.value}}</h3>
+    <p>{{description.value}}</p>
+    <h4 *ngIf="tags.length > 0">Related tags</h4>
+    <div style="display: inline;" *ngFor="let item of tags">{{item}} </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+.player {
+    width: 60%;
+    /* Establece el ancho al 70% */
+    background-color: lightblue;
+}
+
+.player-col {
+  margin-left: 4%;
+  margin-top: 2%;
+
+}
+
+.description {
+  background-color: rgba(128, 128, 128, 0.568);
+}

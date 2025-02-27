@@ -1,0 +1,12 @@
+<div class="video-list" *ngFor="let video of videos">
+  <a [routerLink]="['/watch']" [queryParams]="{ v: video.id }">
+  <mat-card class="video-card" appearance="outlined">
+    <img mat-card-image src="{{video.thumbnailUrl}}">
+    <mat-card-header>
+      <div mat-card-avatar class="profile-avatar"></div>
+      <mat-card-title>{{video.title}}</mat-card-title>
+      <mat-card-subtitle>{{video.userId}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+  </a>
+</div>

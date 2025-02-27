@@ -1,0 +1,16 @@
+<mat-toolbar>
+  <button mat-icon-button aria-label="Menu Icon">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="title"><a routerLink="">Youtube Clone</a></span>
+  <span class="spacer"></span>
+  <a routerLink="/upload-video" mat-icon-button aria-label="Upload Video Button">
+    <mat-icon>video_call</mat-icon>
+  </a>
+  <a *ngIf="isAuthenticated; else noAuth" routerLink="/account" mat-icon-button aria-label="Account Button">
+    <mat-icon>account_circle</mat-icon>
+  </a>
+  <ng-template #noAuth>
+    <button (click)="login()" mat-raised-button>Login</button>
+  </ng-template>
+</mat-toolbar>
