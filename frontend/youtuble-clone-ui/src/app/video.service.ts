@@ -47,4 +47,12 @@ export class VideoService {
   retrieveVideos(): Observable<Array<VideoDTO>> {
     return this.httpClient.get<Array<VideoDTO>>(this.videosUrl);
   }
+
+  likeVideo(videoId: string): Observable<VideoDTO> {
+    return this.httpClient.put<VideoDTO>(`${this.videosUrl}/${videoId}/like`, {});
+  }
+
+  dislikeVideo(videoId: string): Observable<VideoDTO> {
+    return this.httpClient.put<VideoDTO>(`${this.videosUrl}/${videoId}/dislike`, {});
+  }
 }
