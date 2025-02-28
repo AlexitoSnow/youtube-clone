@@ -1,0 +1,12 @@
+.drawer-container {
+  height: 100vh;
+  /* Asegura que el contenedor ocupe toda la altura de la ventana */
+  display: flex;
+}
+
+.drawer-content {
+  flex-grow: 1;
+  /* Permite que el contenido crezca para llenar el espacio disponible */
+  padding: 1rem;
+  /* Añade un poco de padding para el contenido */
+}
