@@ -1,5 +1,6 @@
 package com.globant.youtube_clone.controller;
 
+import com.globant.youtube_clone.dto.CommentDTO;
 import com.globant.youtube_clone.dto.UploadResponse;
 import com.globant.youtube_clone.dto.VideoDTO;
 import com.globant.youtube_clone.service.VideoService;
@@ -23,9 +24,9 @@ public class VideoController {
         return ResponseEntity.created(URI.create(response.videoUrl())).body(new UploadResponse(response.id(), response.videoUrl()));
     }
 
-    @GetMapping
-    public List<VideoDTO> retrieveVideos() {
-        return service.getVideos();
+    @GetMapping @ResponseStatus(HttpStatus.OK)
+    public List<VideoDTO> retrievePublicVideos() {
+        return service.getPublicVideos();
     }
 
     @PostMapping("upload/{videoId}/thumbnail") @ResponseStatus(HttpStatus.CREATED)
@@ -43,4 +44,25 @@ public class VideoController {
     public VideoDTO getVideoDetails(@PathVariable String videoId) {
         return service.getVideoDetails(videoId);
     }
+
+    @PutMapping("{videoId}/like") @ResponseStatus(HttpStatus.OK)
+    public VideoDTO likeVideo(@PathVariable String videoId) {
+        return service.likeVideo(videoId);
+    }
+
+    @PutMapping("{videoId}/dislike") @ResponseStatus(HttpStatus.OK)
+    public VideoDTO dislikeVideo(@PathVariable String videoId) {
+        return service.dislikeVideo(videoId);
+    }
+
+    @PostMapping("{videoId}/comments") @ResponseStatus(HttpStatus.OK)
+    public void addComment(@PathVariable String videoId, @RequestBody CommentDTO commentDTO) {
+        service.addComment(videoId, commentDTO);
+    }
+
+    @GetMapping("{videoId}/comments") @ResponseStatus(HttpStatus.OK)
+    public List<CommentDTO> getCommentsFrom(@PathVariable String videoId) {
+        return service.getAllCommentsFrom(videoId);
+    }
+
 }

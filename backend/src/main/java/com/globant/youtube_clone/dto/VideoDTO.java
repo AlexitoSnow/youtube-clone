@@ -2,6 +2,7 @@ package com.globant.youtube_clone.dto;
 
 import com.globant.youtube_clone.model.VideoStatus;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 public record VideoDTO (
@@ -12,6 +13,10 @@ public record VideoDTO (
         Set<String>tags,
         String videoUrl,
         VideoStatus videoStatus,
-        String thumbnailUrl
+        String thumbnailUrl,
+        Integer likes,
+        Integer dislikes,
+        Integer views,
+        LocalDate uploadedAt
 ) {
 }
