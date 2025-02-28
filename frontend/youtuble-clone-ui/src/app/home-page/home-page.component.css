@@ -1,5 +1,15 @@
 .video-card {
   max-width: 400px;
+  margin: 10px;
+}
+
+.video-card img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  /* Ajusta esta altura según tus necesidades */
+  object-fit: cover;
+  /* Esto asegura que la imagen se recorte para llenar el contenedor */
 }
 
 .profile-avatar {

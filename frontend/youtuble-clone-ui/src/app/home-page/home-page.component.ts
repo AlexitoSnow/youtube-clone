@@ -4,7 +4,6 @@ import { MatCardModule } from '@angular/material/card';
 import { VideoDTO } from '../video-dto';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import { VideoService } from '../video.service';
 
 @Component({

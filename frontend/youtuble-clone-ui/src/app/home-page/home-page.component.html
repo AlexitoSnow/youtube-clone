@@ -1,7 +1,10 @@
 <div class="video-list" *ngFor="let video of videos">
   <a [routerLink]="['/watch']" [queryParams]="{ v: video.id }">
   <mat-card class="video-card" appearance="outlined">
-    <img mat-card-image src="{{video.thumbnailUrl}}">
+    <img *ngIf="video.thumbnailUrl; else placeHolder" mat-card-image src="{{video.thumbnailUrl}}">
+    <ng-template #placeHolder>
+      <img mat-card-image src="https://alexito-youtube-clone-bucket.s3.us-east-1.amazonaws.com/default-thumbnail.jpg">
+    </ng-template>
     <mat-card-header>
       <div mat-card-avatar class="profile-avatar"></div>
       <mat-card-title>{{video.title}}</mat-card-title>
