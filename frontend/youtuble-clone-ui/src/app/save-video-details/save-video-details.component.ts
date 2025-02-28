@@ -1,5 +1,5 @@
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -50,7 +50,7 @@ export class SaveVideoDetailsComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     private service: VideoService,
-    private router: Router,
+    private router: Router
   ) {
     this.videoId = this.activatedRoute.snapshot.params['videoId'];
     this.videoDetailsForm = new FormGroup({
@@ -70,11 +70,13 @@ export class SaveVideoDetailsComponent {
     this.videoDetails!.tags = this.tags;
     this.videoDetails!.title = this.title.value;
     this.videoDetails!.videoStatus = this.status.value;
-    console.log(this.tags.values as unknown as Set<string>);
-    console.log(this.videoDetails!.thumbnailUrl);
 
-    this.service.updateVideoDetails(this.videoDetails!).subscribe(data => {
-      this._snackBar.open("Video Updated", "Ok");
+    this.updateVideoDetails();
+  }
+
+  updateVideoDetails() {
+    this.service.updateVideoDetails(this.videoDetails!).subscribe((data) => {
+      this._snackBar.open('Video Updated', 'Ok');
       console.log(data);
       this.router.navigateByUrl(`/watch?v=${this.videoId}`);
     });
@@ -108,7 +110,7 @@ export class SaveVideoDetailsComponent {
     }
   }
 
-  onUploadThumbnail($event: Event) {
+  onUploadThumbnail() {
     this.service
       .uploadThumbnail(this.selectedFile, this.videoId)
       .subscribe((data) => {

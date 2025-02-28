@@ -1,13 +1,27 @@
-
 <div class="player-col">
   <div class="player">
     <ng-container *ngIf="videoDetails">
-    <video-player [videoUrl]='videoUrl' />
+      <video-player [videoUrl]='videoUrl'></video-player>
     </ng-container>
   </div>
-  <h3>{{videoDetails?.title}}</h3>
+  <div class="video-info">
+    <h3>{{videoDetails?.title}}</h3>
+    <div class="like-dislike-buttons">
+      <mat-button-toggle-group hideSingleSelectionIndicator="true">
+        <mat-button-toggle (click)="likeVideo($event)" aria-label="Like Button">
+          <mat-icon>thumb_up</mat-icon>
+          {{videoDetails?.likes}}
+        </mat-button-toggle>
+        <mat-button-toggle (click)="dislikeVideo($event)" aria-label="Dislike Button">
+          <mat-icon>thumb_down</mat-icon>
+          {{videoDetails?.dislikes}}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+  <div class="video-info">
+    <p>{{videoDetails?.views}} views</p>
+    <p>{{videoDetails?.uploadedAt}}</p>
+  </div>
   <p class="description">{{videoDetails?.description}}</p>
-  <button (click)="likeVideo($event)" mat-icon-button aria-label="Like Button">
-      <mat-icon>like</mat-icon>
-  </button>
 </div>

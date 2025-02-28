@@ -13,3 +13,21 @@
 .description {
   background-color: rgba(128, 128, 128, 0.568);
 }
+
+.video-info {
+  display: flex;
+  align-items: center;
+}
+
+.video-info p {
+  margin: 5px;
+}
+
+.video-info div {
+  margin: 5px;
+}
+
+.like-dislike-buttons {
+  display: flex;
+  align-items: center;
+}
