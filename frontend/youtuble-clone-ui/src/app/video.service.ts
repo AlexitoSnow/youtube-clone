@@ -1,21 +1,24 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UploadResponse as UploadResponse } from './upload-video/UploadVideoResponse';
 import { VideoDTO } from './video-dto';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class VideoService {
   videosUrl = 'http://localhost:8080/api/videos';
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+  ) {}
 
   uploadVideo(file: File): Observable<UploadResponse> {
     const formData = new FormData();
     formData.append('file', file, file.name);
     return this.httpClient.post<UploadResponse>(
-      this.videosUrl,
+      this.videosUrl + '/upload',
       formData
     );
   }
@@ -24,15 +27,13 @@ export class VideoService {
     const formData = new FormData();
     formData.append('file', file, file.name);
     return this.httpClient.post<UploadResponse>(
-      `${this.videosUrl}/${videoId}/thumbnail`,
+      `${this.videosUrl}/upload/${videoId}/thumbnail`,
       formData
     );
   }
 
   getVideo(videoId: string): Observable<VideoDTO> {
-    return this.httpClient.get<VideoDTO>(
-      `${this.videosUrl}/${videoId}`
-    );
+    return this.httpClient.get<VideoDTO>(`${this.videosUrl}/${videoId}`);
   }
 
   updateVideoDetails(videoDetails: VideoDTO): Observable<VideoDTO> {

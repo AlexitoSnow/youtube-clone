@@ -29,6 +29,7 @@ export class ToolBarHeaderComponent implements OnInit {
   }
 
   login() {
+    console.log('use this to login', 'alexitosnow2002@gmail.com', 'Alexito123-');
     this.oidcSecurityService.authorize();
   }
 }

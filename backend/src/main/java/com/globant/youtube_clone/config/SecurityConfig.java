@@ -13,6 +13,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(requests -> {
+                    requests
+                            .requestMatchers("/api/videos", "/api/videos/{videoId}")
+                            .permitAll(); // Permitir acceso sin autenticación
                     requests.anyRequest().authenticated();
                 }).oauth2ResourceServer(
                         oauth2 -> {

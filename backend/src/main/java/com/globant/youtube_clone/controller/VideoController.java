@@ -17,13 +17,7 @@ import java.util.List;
 public class VideoController {
     private final VideoService service;
 
-    @GetMapping("hello")
-    public String hello() {
-        return "hello";
-    }
-
-
-    @PostMapping @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("upload") @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UploadResponse> uploadVideo(@RequestParam MultipartFile file) {
         var response = service.uploadVideo(file);
         return ResponseEntity.created(URI.create(response.videoUrl())).body(new UploadResponse(response.id(), response.videoUrl()));
@@ -34,7 +28,7 @@ public class VideoController {
         return service.getVideos();
     }
 
-    @PostMapping("{videoId}/thumbnail") @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("upload/{videoId}/thumbnail") @ResponseStatus(HttpStatus.CREATED)
     public UploadResponse uploadThumbnail(@RequestParam MultipartFile file, @PathVariable String videoId) {
         var response = service.uploadThumbnail(file, videoId);
         return new UploadResponse(response.id(), response.thumbnailUrl());

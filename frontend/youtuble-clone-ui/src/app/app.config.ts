@@ -2,11 +2,12 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { config } from 'dotenv';
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
-import { authInterceptor, LogLevel, provideAuth } from 'angular-auth-oidc-client';
-
-config();
+import { provideHttpClient, withInterceptors, } from '@angular/common/http';
+import {
+  authInterceptor,
+  LogLevel,
+  provideAuth,
+} from 'angular-auth-oidc-client';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,21 +16,20 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([authInterceptor()])),
     provideAuth({
       config: {
-        authority: process.env['AUTHORITY'],
+        authority: 'https://dev-apaatbftgixmzn3z.us.auth0.com',
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
-        clientId: process.env['CLIENT_ID'],
+        clientId: 'dlL796i3m4udHhRAo5GS7CDeH7qrK2yY',
         scope: 'openid profile email offline_access',
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,
         logLevel: LogLevel.Debug,
-        secureRoutes: ['http://localhost:8080/'],
+        secureRoutes: ['http://localhost:8080'],
         customParamsAuthRequest: {
-          audience: 'http://localhost:8080/',
+          audience: 'http://localhost:8080',
         },
       },
     }),
   ],
 };
-
