@@ -2,13 +2,14 @@ package com.globant.youtube_clone.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.globant.youtube_clone.dto.UserDisplay;
 import com.globant.youtube_clone.dto.UserInfoDTO;
 import com.globant.youtube_clone.mappers.UserMapper;
 import com.globant.youtube_clone.model.User;
 import com.globant.youtube_clone.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,11 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
-@Service @RequiredArgsConstructor
+@Service @RequiredArgsConstructor @Slf4j
 public class UserService {
 
     private final UserRepository repository;
@@ -27,7 +30,7 @@ public class UserService {
     private String userInfoEndpoint;
     private final UserMapper mapper;
 
-    public void registerUser(String token) {
+    public UserInfoDTO registerUser(String token) {
         HttpRequest request = HttpRequest.newBuilder().GET().uri(URI.create(userInfoEndpoint))
                 .setHeader("Authorization", "Bearer " + token)
                 .build();
@@ -39,10 +42,16 @@ public class UserService {
             String body = response.body();
             ObjectMapper jsonMapper = new ObjectMapper();
             jsonMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
             var userDTO = jsonMapper.readValue(body, UserInfoDTO.class);
-            repository.save(mapper.fromDTO(userDTO));
 
+            User user = mapper.fromDTO(userDTO);
+            Optional<User> optionalUser = repository.findBySub(user.getSub());
+            if (optionalUser.isPresent()) {
+                return mapper.toDTO(optionalUser.get());
+            }
+            user.setId(UUID.randomUUID().toString());
+            user.setDisplayName(user.getFirstName());
+            return mapper.toDTO(repository.save(user));
         } catch (Exception e) {
             throw new RuntimeException("Exception occurred while registering user", e.getCause());
         }
@@ -51,6 +60,12 @@ public class UserService {
     public User getCurrent() {
         String sub = ((Jwt) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getClaim("sub");
         return repository.findBySub(sub).orElseThrow(() -> new IllegalArgumentException("Cannot find user with sub - " + sub ));
+    }
+
+    public UserDisplay getUserInfo(String userId) {
+        var response = repository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Cannot find user with id - " + userId));
+        log.info("UserDisplay: {}", response);
+        return mapper.toDisplay(response);
     }
 
     public boolean ifLikedVideo(String videoId) {
@@ -111,5 +126,9 @@ public class UserService {
 
     public Set<String> getVideoHistory(String userId) {
         return getCurrent().getVideoHistory();
+    }
+
+    public UserInfoDTO getLoggedUser() {
+        return mapper.toDTO(getCurrent());
     }
 }
