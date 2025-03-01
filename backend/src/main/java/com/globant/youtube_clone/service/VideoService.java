@@ -10,7 +10,6 @@ import com.globant.youtube_clone.model.VideoStatus;
 import com.globant.youtube_clone.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,9 +64,9 @@ public class VideoService {
         try {
             userService.addToWatchHistory(videoId);
         } catch (Exception e) {
-            log.warn("Video %s watched but not user logged", videoId);
+            log.warn("Video {} watched but not user logged", videoId);
         }
-        return videoMapper.toDTO(video);
+        return videoMapper.toDTO(videoRepository.save(video));
     }
 
     public List<VideoDTO> getVideos() {
@@ -75,10 +74,9 @@ public class VideoService {
     }
 
     public List<VideoDTO> getPublicVideos() {
-        var videoSample = new Video();
-        videoSample.setVideoStatus(VideoStatus.PUBLIC);
-        var example = Example.of(videoSample);
-        return videoRepository.findAll(example).stream().map(videoMapper::toDTO).toList();
+        var response = videoRepository.findByVideoStatus(VideoStatus.PUBLIC).stream().map(videoMapper::toDTO).toList();
+        log.info("Videos response: {}", response.size());
+        return response;
     }
 
     public VideoDTO likeVideo(String videoId) {

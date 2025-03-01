@@ -16,6 +16,7 @@ public class User {
     private String lastName;
     private String email;
     private String sub;
+    private String displayName;
     private String picture;
     private Set<String> subscribedToUsers;
     private Set<String> subscribers;

@@ -36,7 +36,9 @@ public class Video {
         comments = new CopyOnWriteArrayList<>();
     }
 
-    public void incrementViews() { views.incrementAndGet(); }
+    public void incrementViews() {
+        views.incrementAndGet();
+    }
 
     public void incrementLikes() {
         likes.incrementAndGet();
