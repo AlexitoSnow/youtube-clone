@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UploadResponse as UploadResponse } from './upload-video/UploadVideoResponse';
-import { VideoDTO } from './video-dto';
+import { UploadResponse as UploadResponse } from '../upload-video/UploadVideoResponse';
+import { VideoDTO } from '../video-dto';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Injectable({

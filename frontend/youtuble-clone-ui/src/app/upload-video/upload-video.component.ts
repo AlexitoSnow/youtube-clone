@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxFileDropEntry, FileSystemFileEntry, FileSystemDirectoryEntry, NgxFileDropModule } from 'ngx-file-drop';
 import { MatButtonModule } from '@angular/material/button';
-import { VideoService } from '../video.service';
-import { HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { VideoService } from '../services/video.service';
 import { Router } from '@angular/router';
+import { OidcSecurityService } from 'angular-auth-oidc-client';
 
 @Component({
   selector: 'upload-video',
@@ -12,12 +12,23 @@ import { Router } from '@angular/router';
   styleUrls: ['./upload-video.component.css'],
   imports: [NgxFileDropModule, CommonModule, MatButtonModule],
 })
-export class UploadVideoComponent {
+export class UploadVideoComponent implements OnInit {
   public files: NgxFileDropEntry[] = [];
   fileUploaded: boolean = false;
   fileEntry: FileSystemFileEntry | undefined;
 
-  constructor(private service: VideoService, private router: Router) {}
+  constructor(
+    private service: VideoService,
+    private router: Router,
+    private oidcSecurityService: OidcSecurityService
+  ) {}
+  ngOnInit(): void {
+    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated }) => {
+      if (!isAuthenticated) {
+        this.oidcSecurityService.authorize();
+      }
+    });
+  }
 
   public videoDropped(files: NgxFileDropEntry[]) {
     this.files = files;
@@ -25,31 +36,23 @@ export class UploadVideoComponent {
       if (droppedFile.fileEntry.isFile) {
         this.fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
         this.fileEntry.file((file: File) => {
-          console.log(droppedFile.relativePath, file);
-
           this.fileUploaded = true;
         });
       } else {
         const fileEntry = droppedFile.fileEntry as FileSystemDirectoryEntry;
-        console.log(droppedFile.relativePath, fileEntry);
       }
     }
   }
 
-  public fileOver(event: any) {
-    console.log(event);
-  }
+  public fileOver(event: any) {}
 
-  public fileLeave(event: any) {
-    console.log(event);
-  }
+  public fileLeave(event: any) {}
 
   public uploadVideo() {
     if (this.fileEntry != undefined) {
       this.fileEntry.file((file) => {
         this.service.uploadVideo(file).subscribe((data) => {
-          console.log('Video upload successfully');
-          this.router.navigateByUrl("/video-details/" + data.id);
+          this.router.navigateByUrl('/video-details/' + data.id);
         });
       });
     }

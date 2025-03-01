@@ -4,24 +4,40 @@
       <video-player [videoUrl]='videoUrl'></video-player>
     </ng-container>
   </div>
+  <h3>{{videoDetails?.title}}</h3>
   <div class="video-info">
-    <h3>{{videoDetails?.title}}</h3>
+    <mat-card>
+      <mat-card-header>
+        <div *ngIf="userDetails?.picture; else defaultIcon" class="profile-avatar" mat-card-avatar [ngStyle]="{'background-image': 'url(' + userDetails!.picture + ')'}"></div>
+        <ng-template #defaultIcon>
+            <mat-icon mat-card-avatar class="default-icon">account_circle</mat-icon>
+        </ng-template>
+        <mat-card-title>{{userDetails?.displayName}}</mat-card-title>
+        <mat-card-subtitle *ngIf="userDetails">{{userDetails.subscribers}} subscribers</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+    <button mat-raised-button color="primary" class="subscribe-button" (click)="toggleSubscription($event)">
+      <mat-icon *ngIf="isSubscribed">notifications_none</mat-icon>
+      <span *ngIf="isSubscribed">Subscribed</span>
+      <span *ngIf="!isSubscribed">Subscribe</span>
+    </button>
     <div class="like-dislike-buttons">
       <mat-button-toggle-group hideSingleSelectionIndicator="true">
         <mat-button-toggle (click)="likeVideo($event)" aria-label="Like Button">
-          <mat-icon>thumb_up</mat-icon>
+          <mat-icon>{{likeButton}}</mat-icon>
           {{videoDetails?.likes}}
         </mat-button-toggle>
         <mat-button-toggle (click)="dislikeVideo($event)" aria-label="Dislike Button">
-          <mat-icon>thumb_down</mat-icon>
+          <mat-icon>{{dislikeButton}}</mat-icon>
           {{videoDetails?.dislikes}}
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
   </div>
-  <div class="video-info">
-    <p>{{videoDetails?.views}} views</p>
-    <p>{{videoDetails?.uploadedAt}}</p>
+  <div>
+    <span>{{videoDetails?.views}} views  </span>
+    <span>{{videoDetails?.uploadedAt}}</span>
   </div>
   <p class="description">{{videoDetails?.description}}</p>
+  <comments-section [videoId]="videoId" [isAuth]="isAuthenticated()"></comments-section>
 </div>

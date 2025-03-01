@@ -7,9 +7,16 @@
   <a routerLink="/upload-video" mat-icon-button aria-label="Upload Video Button">
     <mat-icon>video_call</mat-icon>
   </a>
-  <a *ngIf="isAuthenticated; else noAuth" routerLink="/account" mat-icon-button aria-label="Account Button">
-    <mat-icon>account_circle</mat-icon>
-  </a>
+  <div *ngIf="isAuthenticated; else noAuth" mat-icon-button [matMenuTriggerFor]="menu">
+    <img *ngIf="user?.picture; else defaultIcon" [src]="user!.picture" class="profile-icon">
+    <ng-template #defaultIcon>
+      <mat-icon>account_circle</mat-icon>
+    </ng-template>
+  </div>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item routerLink="/account">Account</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </mat-menu>
   <ng-template #noAuth>
     <button (click)="login()" mat-raised-button>Login</button>
   </ng-template>

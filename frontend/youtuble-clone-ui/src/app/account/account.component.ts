@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-account',
@@ -9,7 +10,7 @@ import { OidcSecurityService } from 'angular-auth-oidc-client';
   styleUrl: './account.component.css',
 })
 export class AccountComponent implements OnInit {
-  constructor(private oidcSecurityService: OidcSecurityService) {}
+  constructor(private oidcSecurityService: OidcSecurityService, private service: UserService) {}
 
   ngOnInit(): void {
     this.oidcSecurityService.isAuthenticated$.subscribe(
@@ -23,7 +24,10 @@ export class AccountComponent implements OnInit {
 
   logout() {
     this.oidcSecurityService
-      .logoff()
-      .subscribe((result) => console.log(result));
+      .logoffAndRevokeTokens()
+      .subscribe((result) => {
+        this.service.userLogged = undefined;
+      });
+    this.oidcSecurityService.logoffLocal();
   }
 }

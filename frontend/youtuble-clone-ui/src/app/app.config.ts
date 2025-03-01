@@ -8,12 +8,13 @@ import {
   LogLevel,
   provideAuth,
 } from 'angular-auth-oidc-client';
+import { CsrfInterceptor } from './csrf-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor()])),
+    provideHttpClient(withInterceptors([authInterceptor(), CsrfInterceptor])),
     provideAuth({
       config: {
         authority: 'https://dev-apaatbftgixmzn3z.us.auth0.com',

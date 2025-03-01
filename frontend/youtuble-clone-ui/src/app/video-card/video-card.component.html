@@ -1,0 +1,16 @@
+<a [routerLink]="['/watch']" [queryParams]="{ v: video.id }">
+  <mat-card class="video-card" appearance="raised">
+    <img *ngIf="video.thumbnailUrl; else placeHolder" mat-card-image src="{{video.thumbnailUrl}}">
+    <ng-template #placeHolder>
+      <img mat-card-image src="https://alexito-youtube-clone-bucket.s3.us-east-1.amazonaws.com/default-thumbnail.jpg">
+    </ng-template>
+    <mat-card-header>
+      <div *ngIf="user?.picture; else defaultIcon" class="profile-avatar" mat-card-avatar [ngStyle]="{'background-image': 'url(' + user.picture + ')'}"></div>
+      <ng-template #defaultIcon>
+        <mat-icon mat-card-avatar class="default-icon">account_circle</mat-icon>
+      </ng-template>
+      <mat-card-title>{{video.title}}</mat-card-title>
+      <mat-card-subtitle *ngIf="user">{{user.displayName}}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</a>

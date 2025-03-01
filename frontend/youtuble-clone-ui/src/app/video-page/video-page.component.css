@@ -19,10 +19,6 @@
   align-items: center;
 }
 
-.video-info p {
-  margin: 5px;
-}
-
 .video-info div {
   margin: 5px;
 }
@@ -30,4 +26,27 @@
 .like-dislike-buttons {
   display: flex;
   align-items: center;
+}
+
+.profile-avatar {
+  background-size: cover;
+}
+
+.default-icon {
+  width: 40px;
+  /* Ajusta el tamaño según sea necesario */
+  height: 40px;
+  /* Ajusta el tamaño según sea necesario */
+  font-size: 40px;
+  /* Ajusta el tamaño según sea necesario */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.mat-button-toggle-checked {
+  background-color: transparent !important;
+  color: inherit !important;
+  border-color: transparent !important;
 }

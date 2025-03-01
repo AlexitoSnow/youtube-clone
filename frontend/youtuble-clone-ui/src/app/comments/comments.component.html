@@ -1,0 +1,19 @@
+<h3>{{count}} Comments</h3>
+<form class="video-details" [formGroup]="commentsForm" (ngSubmit)="addComment()">
+  <mat-form-field class="full-width">
+    <textarea matInput [formControlName]="'comment'" placeholder="Add a comment"></textarea>
+  </mat-form-field>
+  <button mat-flat-button color="primary" type="submit">Comment</button>
+</form>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let comment of comments">
+    <img [src]="getUserDisplay(comment.authorId).picture" alt="Profile Picture" class="profile-pic">
+    <span>{{getUserDisplay(comment.authorId).displayName}}</span>
+    <span>{{comment.createdAt | date}}</span>
+    <p>{{comment.text}}</p>
+    <mat-icon>thumb_up_off_alt</mat-icon>
+    <span> {{comment.likes}}  </span>
+    <mat-icon>thumb_down_off_alt</mat-icon>
+      <span> {{comment.dislikes}}</span>
+  </li>
+</ul>

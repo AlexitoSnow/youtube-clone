@@ -1,7 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToolBarHeaderComponent } from "./header/header.component";
-import { OidcSecurityService } from 'angular-auth-oidc-client';
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { MatSidenavModule } from '@angular/material/sidenav';
 
@@ -16,12 +15,5 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent implements OnInit {
-  constructor(private oidcSecurityService: OidcSecurityService) {}
-
-  ngOnInit() {
-    this.oidcSecurityService.checkAuth().subscribe(({ isAuthenticated }) => {
-      console.log('is auth?', isAuthenticated);
-    });
-  }
+export class AppComponent {
 }

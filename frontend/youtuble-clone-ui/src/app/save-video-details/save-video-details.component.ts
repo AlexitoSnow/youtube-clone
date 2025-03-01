@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { VideoService } from '../video.service';
+import { VideoService } from '../services/video.service';
 import { CommonModule } from '@angular/common';
 import { VideoPlayerComponent } from '../video-player/video-player.component';
 import { VideoDTO } from '../video-dto';
@@ -59,9 +59,7 @@ export class SaveVideoDetailsComponent {
       videoStatus: this.status,
     });
     service.getVideo(this.videoId).subscribe((data) => {
-      console.log('Retrieving...');
       this.videoDetails = data;
-      console.log(this.videoDetails);
     });
   }
 
@@ -77,7 +75,6 @@ export class SaveVideoDetailsComponent {
   updateVideoDetails() {
     this.service.updateVideoDetails(this.videoDetails!).subscribe((data) => {
       this._snackBar.open('Video Updated', 'Ok');
-      console.log(data);
       this.router.navigateByUrl(`/watch?v=${this.videoId}`);
     });
   }
